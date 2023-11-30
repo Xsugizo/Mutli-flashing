@@ -1,0 +1,1 @@
+/home/dockerplatform/Desktop/Mutli-flashing/6490/A14/install_Athena_A14_1vN.sh
