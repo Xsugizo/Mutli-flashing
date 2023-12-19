@@ -309,7 +309,7 @@ answer="y"
 adb devices > devices.txt
 d=`grep device devices.txt -c`
 echo "d=$d"
-if [ $d -ge 0 ]; then
+if [ $d -ge 2 ]; then
 	echo "***********************"
 	echo "   Device in adb mode  "
 	echo "***********************"

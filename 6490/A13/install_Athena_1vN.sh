@@ -238,7 +238,7 @@ answer="y"
 check_adb_id $msmserialno
 adb -t $d devices > $device_sn+"_"+dev.txt
 a=`grep device $device_sn+"_"+dev.txt -c`
-if [ $? -eq 0 ]; then
+if [ $? -ge 2 ]; then
 	echo "***********************"
 	echo "   Device in adb mode  "
 	echo "***********************"

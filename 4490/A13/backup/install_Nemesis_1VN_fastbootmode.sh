@@ -168,25 +168,25 @@ msmserialno="$3"
 echo "  msmserialno: $msmserialno  "
 
 answer="y"
-adb devices > devices.txt
-d=`grep device devices.txt -c`
-if [ $d -ge 2 ]; then
-	echo "***********************"
-	echo "   Device in adb mode  "
-	echo "***********************"
+# adb devices > devices.txt
+# d=`grep device devices.txt -c`
+# if [ $d -ge 0 ]; then
+# 	echo "***********************"
+# 	echo "   Device in adb mode  "
+# 	echo "***********************"
 
-	platform_value=$(adb -s $device_sn shell getprop ro.boot.device.platform | tr -d '\r')
-	if [ "$platform_value" != "4490" ];then
-		echo "**************************"
-		echo "   Wrong platform : $platform_value  "
-		echo "**************************"
-		exit -1
-	fi
-	product_check="pass"
-	adb -s $device_sn reboot bootloader
-	echo "Rebooting to fastboot, wait for 10 seconds..."
-	sleep 10
-fi
+# 	platform_value=$(adb -s $device_sn shell getprop ro.boot.device.platform | tr -d '\r')
+# 	if [ "$platform_value" != "4490" ];then
+# 		echo "**************************"
+# 		echo "   Wrong platform : $platform_value  "
+# 		echo "**************************"
+# 		exit -1
+# 	fi
+# 	product_check="pass"
+# 	adb -s $device_sn reboot bootloader
+# 	echo "Rebooting to fastboot, wait for 10 seconds..."
+# 	sleep 10
+# fi
 
 fastboot devices > devices.txt
 d=`grep fastboot devices.txt -c`

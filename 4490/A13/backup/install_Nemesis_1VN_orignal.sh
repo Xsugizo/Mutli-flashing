@@ -170,7 +170,7 @@ echo "  msmserialno: $msmserialno  "
 answer="y"
 adb devices > devices.txt
 d=`grep device devices.txt -c`
-if [ $d -ge 2 ]; then
+if [ $d -ge 1 ]; then
 	echo "***********************"
 	echo "   Device in adb mode  "
 	echo "***********************"

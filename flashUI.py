@@ -44,7 +44,13 @@ def select_FlashImage():
 
 
 def start():
-    os.system('./Muti_flashing.sh')
+    with open(f'{CurrPath}/RecordOption.txt','w')as f:
+        if Turkish.get()!='--':
+            f.write('Turkish/')
+        if dis_Turkish.get()!='--':
+            f.write('dis_turkish/')
+
+    os.system('./Muti_flashing_new.sh')
 
 
 # def show():
@@ -92,6 +98,17 @@ label.pack(side=tk.TOP)
 # 創建一個框架
 frame2 = tk.Frame(root)
 frame2.pack()
+
+
+Turkish = tk.StringVar()
+checkbutton1 = tk.Checkbutton(frame2, text="Enbale Turkish",variable=Turkish, onvalue='Turkish', offvalue='--',pady=1)
+checkbutton1.pack(side=tk.LEFT)
+checkbutton1.deselect()
+
+dis_Turkish = tk.StringVar()
+checkbutton2 = tk.Checkbutton(frame2, text="Disable Turkish",variable=dis_Turkish, onvalue='dis_turkish', offvalue='--',pady=1)
+checkbutton2.pack(side=tk.LEFT)
+checkbutton2.deselect()
 
 e_path1 = tk.Entry(root, textvariable=var1, width=64)
 e_path1.place(x=10, y=80)

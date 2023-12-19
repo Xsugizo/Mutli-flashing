@@ -1,7 +1,6 @@
 #!/bin/bash
 # Copyright (c) 2023 Zebra Technologies Corporation and/or its affiliates. All rights reserved.
 # Nemesis Install Script
-
 function check_adb_id {
     adb devices -l > devices.txt
     sed -i '1d' devices.txt
@@ -44,7 +43,7 @@ function install_image_real {
 	echo " Installing $2"
 	echo "***********************"
 
-	fastboot -s $device_sn flash -S 250M --unbuffered $1 $image 2>&1 | tee install.txt | grep "Sending"
+	fastboot flash -S 250M --unbuffered $1 $image 2>&1 | tee install.txt | grep "Sending"
 
 	e='grep FAILED install.txt'
 	if [ $? -ne 0 ]; then
@@ -142,8 +141,8 @@ function install_android_image {
 		install_image $image_name
 	done
 
-	fastboot -s $device_sn erase userdata
-	fastboot -s $device_sn erase metadata
+	fastboot erase userdata
+	fastboot erase metadata
 	fastboot --set-act=a
 }
 
@@ -167,10 +166,12 @@ echo "  sku: $sku_id  "
 msmserialno="$3"
 echo "  msmserialno: $msmserialno  "
 
+
+
 answer="y"
 adb devices > devices.txt
 d=`grep device devices.txt -c`
-if [ $d -ge 2 ]; then
+if [ $d -ge 0 ]; then
 	echo "***********************"
 	echo "   Device in adb mode  "
 	echo "***********************"
@@ -239,9 +240,9 @@ echo "***********************"
 echo "Installing Nemesis Image"
 echo "***********************"
 
-fastboot -s $device_sn oem SYS_SN 2> devinfo.txt
+fastboot -s $device_sn oem SYS_SN 2> $device_sn devinfo.txt
 # check sku id before install
-e=`grep "SYS_SN: S" devinfo.txt`
+e=`grep "SYS_SN: S" $device_sn devinfo.txt`
 if [ $? -ne 0 ]; then
 	echo "***********************"
 	echo "    Install Aborted    "
@@ -249,12 +250,12 @@ if [ $? -ne 0 ]; then
 	echo "***********************"
 	exit -1
 else
-	sys_sn=`cat devinfo.txt | grep SYS_SN | cut -d ":" -f 2`
+	sys_sn=`cat $device_sn devinfo.txt | grep SYS_SN | cut -d ":" -f 2`
 fi
 
-fastboot -s $device_sn oem device-info 2> devinfo.txt
+fastboot -s $device_sn oem device-info 2> $device_sn devinfo.txt
 # check sku id before install
-e=`grep "SKU: 0" devinfo.txt`
+e=`grep "SKU: 0" $device_sn devinfo.txt`
 if [ $? -eq 0 ]; then
 	echo "***********************"
 	echo "    Install Aborted    "
@@ -262,7 +263,7 @@ if [ $? -eq 0 ]; then
 	echo "***********************"
 	exit -1
 else
-	sku=`cat devinfo.txt | grep SKU | cut -d ":" -f 2 | tr -d '\r'`
+	sku=`cat $device_sn devinfo.txt | grep SKU | cut -d ":" -f 2 | tr -d '\r'`
 fi
 
 echo "***********************"
