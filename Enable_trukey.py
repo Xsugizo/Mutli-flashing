@@ -69,18 +69,19 @@ for i in devices:
     print("device id="+i)
     os.system('adb -s '+i+' root')
     sleep (10)
-    os.system('adb -s '+i+' disable-verity')
-    sleep (10)
-    os.system('adb -s '+i+' reboot')
-    sleep (5)
+    # os.system('adb -s '+i+' disable-verity')
+    # sleep (10)
+    # os.system('adb -s '+i+' reboot')
+    # sleep (5)
 
-    while number != coun:
+    # while number != coun:
         
-        number = get_device_num()
-        if number==coun:
-            print('reboot complete')
-    os.system('adb -s '+i+' root')
-    sleep (10)
+    #     number = get_device_num()
+    #     if number==coun:
+    #         print('reboot complete')
+    # sleep (10)
+    # os.system('adb -s '+i+' root')
+    sleep (15)
     os.system('adb -s '+i+' remount')
     sleep (5) 
     os.system('adb -s '+i+' push '+CurrPath+'/turkish/turkish.ini /odm/zpersist/')
@@ -88,16 +89,20 @@ for i in devices:
     os.system('adb -s '+i+' shell chmod 644 /odm/zpersist/turkish.ini')
     sleep (2) 
     os.system('adb -s '+i+' reboot')
-    sleep (5)
+    
     number = 0
     while number != coun:
         number = get_device_num()
         if number==coun:
             print('reboot complete') 
+
+    sleep (30)
     os.system('adb -s '+i+' reboot')
-    sleep (5)
+    
     number = 0
     while number != coun:
         number = get_device_num()
         if number==coun:
             print('reboot complete') 
+    sleep (60)
+    os.system('adb -s '+i+' shell getprop ro.system_ext.build.fingerprint')

@@ -93,11 +93,11 @@ do
     # ./flashImage1.sh $f1 $f2 $f3 &
 done
 wait
-echo "sleep 30 secs waiting for next steps "
-# progress-bar 900
-source ./progress-bar.sh
-progress-bar 20
-sleep 30
+# echo "sleep 30 secs waiting for next steps "
+# # progress-bar 900
+# source ./progress-bar.sh
+# progress-bar 20
+# sleep 30
 
 
 # # set up
@@ -152,24 +152,62 @@ sleep 30
 # ## GTS test
 # # python3 ./newpytest.py
 # python3 ./newpytest_cmd.py
-echo "waiting for " $devicenum "devices finishing rebooting"
-# echo "current has "   $device_num  "devices"
-coun=0
-while [ $coun != $devicenum ]
+
+
+device_num=$(./device_num_new.py 2>&1)
+mode=($device_num)
+status=${mode[1]}
+
+
+while [ "$status" == "adb" ]
 do
-    
-    coun=$(./device_num.py 2>&1)
+    device_num=$(./device_num_new.py 2>&1)
+    mode=($device_num)
+    status=${mode[1]}
+
+    if  [ "$status" != "adb" ];then
+        echo "get in fastbootmode"
+    fi
+    # devcoun=$(./device_num.py 2>&1)
     # echo "right now has " $coun "devices" 
 done
 
+echo "waiting for " $devicenum "devices finishing flashing Image"
+# echo "current has "   $device_num  "devices"
+devcoun=0
+echo "devcoun=" $devcoun "devicenum=" $devicenum
+while [ $devcoun != $devicenum ]
+do
+    
+    devcoun=$(./device_num.py 2>&1)
+    # echo "right now has " $devcoun "devices" 
+done
+
+echo "sleep 90 secs waiting for next steps "
+# progress-bar 900
+source ./progress-bar.sh
+progress-bar 90
+
+# sleep 60
+
 if  grep -q Turkish RecordOption.txt ; then
     echo "Enable Turkish"
+
+    # echo "sleep 90 secs waiting for next steps "
+    # # progress-bar 900
+    # source ./progress-bar.sh
+    # progress-bar 90
     ./Enable_trukey.py
 
 
 fi
 if  grep -q dis_turkish RecordOption.txt; then
     echo "Disable Turkish"
+
+    # echo "sleep 90 secs waiting for next steps "
+    # # progress-bar 900
+    # source ./progress-bar.sh
+    # progress-bar 90
     ./Disable_trukey.py
 
 fi
