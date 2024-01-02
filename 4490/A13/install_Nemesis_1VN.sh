@@ -273,7 +273,8 @@ fastboot -s $device_sn getvar all 2> variant.txt
 
 
 if [ $# -gt 0 ]; then
-	flash_all=$1
+	#flash_all=$1
+ 	flash_all=all
 else
 	flash_all=all
 fi
